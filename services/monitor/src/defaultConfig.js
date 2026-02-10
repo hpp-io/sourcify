@@ -2,13 +2,17 @@ const defaultConfig = {
   decentralizedStorages: {
     ipfs: {
       enabled: true,
-      gateways: ["https://ipfs.io/ipfs/"],
+      gateways: [
+        "https://ipfs.io/ipfs/",
+        "https://w3s.link/ipfs/",
+        "https://nftstorage.link/ipfs/"
+      ],
       timeout: 30000,
       interval: 5000,
       retries: 5,
     },
   },
-  sourcifyServerURLs: ["https://sourcify.dev/server/"],
+  sourcifyServerURLs: ["http://localhost:5555/"],
   sourcifyRequestOptions: {
     maxRetries: 3,
     retryDelay: 30000,

@@ -1,16 +1,20 @@
 {
-  "1": {
-    "sourcifyName": "Ethereum Mainnet",
+  "190415": {
+    "sourcifyName": "HPP Mainnet",
     "supported": true,
     "fetchContractCreationTxUsing": {
       "blockscoutApi": {
-        "url": "https://eth.blockscout.com/"
-      },
-      "routescanApi": {
-        "type": "mainnet"
-      },
-      "avalancheApi": true
-    },
-    "rpc": ["https://ethereum-rpc.publicnode.com"]
+        "url": "https://explorer.hpp.io"
+      }
+    }
+  },
+  "181228": {
+    "sourcifyName": "HPP Sepolia Testnet",
+    "supported": true,
+    "fetchContractCreationTxUsing": {
+      "blockscoutApi": {
+        "url": "https://sepolia-explorer.hpp.io"
+      }
+    }
   }
 }
