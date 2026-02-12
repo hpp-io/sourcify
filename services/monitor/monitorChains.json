@@ -1,12 +1,377 @@
 [
   {
-    "name": "HPP Mainnet",
-    "chainId": 190415,
-    "rpc": ["https://mainnet.hpp.io"]
+    "name": "Ethereum Mainnet",
+    "chainId": 1,
+    "rpc": [
+      {
+        "type": "ApiKey",
+        "url": "https://eth-mainnet.g.alchemy.com/v2/{API_KEY}",
+        "apiKeyEnvName": "ALCHEMY_API_KEY"
+      },
+      {
+        "type": "ApiKey",
+        "url": "https://{SUBDOMAIN}.quiknode.pro/{API_KEY}",
+        "apiKeyEnvName": "QUICKNODE_API_KEY",
+        "subDomainEnvName": "QUICKNODE_SUBDOMAIN",
+        "traceSupport": "trace_transaction"
+      }
+    ]
   },
   {
-    "name": "HPP Sepolia Testnet",
-    "chainId": 181228,
-    "rpc": ["https://sepolia.hpp.io"]
+    "name": "Ethereum Testnet Sepolia",
+    "title": "Ethereum Testnet Sepolia",
+    "chainId": 11155111,
+    "rpc": [
+      {
+        "type": "ApiKey",
+        "url": "https://eth-sepolia.g.alchemy.com/v2/{API_KEY}",
+        "apiKeyEnvName": "ALCHEMY_API_KEY"
+      },
+      "https://sepolia.drpc.org",
+      "https://1rpc.io/sepolia",
+      {
+        "type": "ApiKey",
+        "url": "https://{SUBDOMAIN}.ethereum-sepolia.quiknode.pro/{API_KEY}",
+        "apiKeyEnvName": "QUICKNODE_API_KEY",
+        "subDomainEnvName": "QUICKNODE_SUBDOMAIN",
+        "traceSupport": "trace_transaction"
+      }
+    ]
+  },
+  {
+    "name": "Ethereum Testnet Hoodi",
+    "title": "Ethereum Testnet Hoodi",
+    "chainId": 560048,
+    "rpc": [
+      {
+        "type": "ApiKey",
+        "url": "https://eth-hoodi.g.alchemy.com/v2/{API_KEY}",
+        "apiKeyEnvName": "ALCHEMY_API_KEY"
+      },
+      "https://rpc.hoodi.ethpandaops.io",
+      {
+        "type": "ApiKey",
+        "url": "https://{SUBDOMAIN}.ethereum-hoodi.quiknode.pro/{API_KEY}",
+        "apiKeyEnvName": "QUICKNODE_API_KEY",
+        "subDomainEnvName": "QUICKNODE_SUBDOMAIN",
+        "traceSupport": "trace_transaction"
+      }
+    ]
+  },
+  {
+    "name": "Arbitrum One",
+    "chainId": 42161,
+    "rpc": [
+      "https://arb1.arbitrum.io/rpc",
+      "https://1rpc.io/arb",
+      "https://arbitrum.meowrpc.com",
+      "https://arbitrum.drpc.org",
+      {
+        "type": "ApiKey",
+        "url": "https://{SUBDOMAIN}.arbitrum-mainnet.quiknode.pro/{API_KEY}",
+        "apiKeyEnvName": "QUICKNODE_API_KEY",
+        "subDomainEnvName": "QUICKNODE_SUBDOMAIN",
+        "traceSupport": "debug_traceTransaction"
+      }
+    ]
+  },
+  {
+    "name": "Arbitrum Sepolia Testnet",
+    "chainId": 421614,
+    "rpc": [
+      "https://sepolia-rollup.arbitrum.io/rpc",
+      "https://api.zan.top/arb-sepolia",
+      "https://arbitrum-sepolia.gateway.tenderly.co",
+      {
+        "type": "ApiKey",
+        "url": "https://{SUBDOMAIN}.arbitrum-sepolia.quiknode.pro/{API_KEY}",
+        "apiKeyEnvName": "QUICKNODE_API_KEY",
+        "subDomainEnvName": "QUICKNODE_SUBDOMAIN",
+        "traceSupport": "debug_traceTransaction"
+      }
+    ]
+  },
+  {
+    "name": "Arbitrum Nova",
+    "chainId": 42170,
+    "rpc": [
+      "https://nova.arbitrum.io/rpc",
+      {
+        "type": "ApiKey",
+        "url": "https://arbnove-mainnet.g.alchemy.com/v2/{API_KEY}",
+        "apiKeyEnvName": "ALCHEMY_API_KEY"
+      },
+      "https://arbitrum-nova.gateway.tenderly.co",
+      {
+        "type": "ApiKey",
+        "url": "https://{SUBDOMAIN}.nova-mainnet.quiknode.pro/{API_KEY}",
+        "apiKeyEnvName": "QUICKNODE_API_KEY",
+        "subDomainEnvName": "QUICKNODE_SUBDOMAIN",
+        "traceSupport": "debug_traceTransaction"
+      }
+    ]
+  },
+  {
+    "name": "Gnosis",
+    "chainId": 100,
+    "rpc": [
+      "https://rpc.gnosischain.com",
+      "https://1rpc.io/gnosis",
+      "https://gnosis.blockpi.network/v1/rpc/public",
+      {
+        "type": "ApiKey",
+        "url": "https://{SUBDOMAIN}.xdai.quiknode.pro/{API_KEY}",
+        "apiKeyEnvName": "QUICKNODE_API_KEY",
+        "subDomainEnvName": "QUICKNODE_SUBDOMAIN",
+        "traceSupport": "trace_transaction"
+      }
+    ]
+  },
+  {
+    "name": "OP Mainnet",
+    "chainId": 10,
+    "rpc": [
+      "https://mainnet.optimism.io",
+      "https://optimism.gateway.tenderly.co",
+      "https://optimism.llamarpc.com",
+      {
+        "type": "ApiKey",
+        "url": "https://{SUBDOMAIN}.optimism.quiknode.pro/{API_KEY}",
+        "apiKeyEnvName": "QUICKNODE_API_KEY",
+        "subDomainEnvName": "QUICKNODE_SUBDOMAIN",
+        "traceSupport": "trace_transaction"
+      }
+    ]
+  },
+  {
+    "name": "OP Sepolia Testnet",
+    "chainId": 11155420,
+    "rpc": [
+      "https://sepolia.optimism.io",
+      "https://optimism-sepolia.gateway.tenderly.co",
+      "https://optimism-sepolia.blockpi.network/v1/rpc/public",
+      {
+        "type": "ApiKey",
+        "url": "https://{SUBDOMAIN}.optimism-sepolia.quiknode.pro/{API_KEY}",
+        "apiKeyEnvName": "QUICKNODE_API_KEY",
+        "subDomainEnvName": "QUICKNODE_SUBDOMAIN",
+        "traceSupport": "trace_transaction"
+      }
+    ]
+  },
+  {
+    "name": "Polygon Mainnet",
+    "chainId": 137,
+    "rpc": [
+      {
+        "type": "ApiKey",
+        "url": "https://polygon-mainnet.g.alchemy.com/v2/{API_KEY}",
+        "apiKeyEnvName": "ALCHEMY_API_KEY"
+      },
+      "https://polygon.llamarpc.com",
+      {
+        "type": "ApiKey",
+        "url": "https://{SUBDOMAIN}.matic.quiknode.pro/{API_KEY}",
+        "apiKeyEnvName": "QUICKNODE_API_KEY",
+        "subDomainEnvName": "QUICKNODE_SUBDOMAIN",
+        "traceSupport": "trace_transaction"
+      }
+    ]
+  },
+  {
+    "name": "Polygon Amoy Testnet",
+    "chainId": 80002,
+    "rpc": [
+      "https://rpc-amoy.polygon.technology",
+      "https://rpc.ankr.com/polygon_amoy",
+      {
+        "type": "ApiKey",
+        "url": "https://{SUBDOMAIN}.matic-amoy.quiknode.pro/{API_KEY}",
+        "apiKeyEnvName": "QUICKNODE_API_KEY",
+        "subDomainEnvName": "QUICKNODE_SUBDOMAIN"
+      }
+    ]
+  },
+  {
+    "name": "Avalanche C-Chain",
+    "chainId": 43114,
+    "rpc": [
+      "https://avalanche-c-chain-rpc.publicnode.com",
+      "https://1rpc.io/avax/c",
+      "https://api.avax.network/ext/bc/C/rpc",
+      {
+        "type": "ApiKey",
+        "url": "https://{SUBDOMAIN}.avalanche-mainnet.quiknode.pro/{API_KEY}/ext/bc/C/rpc/",
+        "apiKeyEnvName": "QUICKNODE_API_KEY",
+        "subDomainEnvName": "QUICKNODE_SUBDOMAIN",
+        "traceSupport": "debug_traceTransaction"
+      }
+    ]
+  },
+  {
+    "name": "Avalanche Fuji Testnet",
+    "chainId": 43113,
+    "rpc": [
+      "https://avalanche-fuji-c-chain-rpc.publicnode.com",
+      {
+        "type": "ApiKey",
+        "url": "https://avax-fuji.g.alchemy.com/v2/{API_KEY}",
+        "apiKeyEnvName": "ALCHEMY_API_KEY"
+      },
+      "https://rpc.ankr.com/avalanche_fuji",
+      {
+        "type": "ApiKey",
+        "url": "https://{SUBDOMAIN}.avalanche-testnet.quiknode.pro/{API_KEY}/ext/bc/C/rpc/",
+        "apiKeyEnvName": "QUICKNODE_API_KEY",
+        "subDomainEnvName": "QUICKNODE_SUBDOMAIN",
+        "traceSupport": "debug_traceTransaction"
+      }
+    ]
+  },
+  {
+    "name": "Base",
+    "chainId": 8453,
+    "rpc": [
+      {
+        "type": "ApiKey",
+        "url": "https://base-mainnet.g.alchemy.com/v2/{API_KEY}",
+        "apiKeyEnvName": "ALCHEMY_API_KEY"
+      },
+      "https://mainnet.base.org",
+      "https://base.llamarpc.com",
+      {
+        "type": "ApiKey",
+        "url": "https://{SUBDOMAIN}.base-mainnet.quiknode.pro/{API_KEY}",
+        "apiKeyEnvName": "QUICKNODE_API_KEY",
+        "subDomainEnvName": "QUICKNODE_SUBDOMAIN",
+        "traceSupport": "trace_transaction"
+      }
+    ]
+  },
+  {
+    "name": "Base Sepolia Testnet",
+    "chainId": 84532,
+    "rpc": [
+      "https://sepolia.base.org",
+      "https://base-sepolia-rpc.publicnode.com",
+      "https://base-sepolia.blockpi.network/v1/rpc/public",
+      {
+        "type": "ApiKey",
+        "url": "https://{SUBDOMAIN}.base-sepolia.quiknode.pro/{API_KEY}",
+        "apiKeyEnvName": "QUICKNODE_API_KEY",
+        "subDomainEnvName": "QUICKNODE_SUBDOMAIN",
+        "traceSupport": "trace_transaction"
+      }
+    ]
+  },
+  {
+    "name": "Hedera Mainnet",
+    "chainId": 295,
+    "rpc": [
+      "https://mainnet.hashio.io/api",
+      {
+        "type": "ApiKey",
+        "url": "https://{SUBDOMAIN}.hedera-mainnet.quiknode.pro/{API_KEY}",
+        "apiKeyEnvName": "QUICKNODE_API_KEY",
+        "subDomainEnvName": "QUICKNODE_SUBDOMAIN"
+      }
+    ]
+  },
+  {
+    "name": "Celo Mainnet",
+    "chainId": 42220,
+    "rpc": [
+      {
+        "type": "ApiKey",
+        "url": "https://celo-mainnet.g.alchemy.com/v2/{API_KEY}",
+        "apiKeyEnvName": "ALCHEMY_API_KEY"
+      },
+      "https://forno.celo.org",
+      {
+        "type": "ApiKey",
+        "url": "https://{SUBDOMAIN}.celo-mainnet.quiknode.pro/{API_KEY}",
+        "apiKeyEnvName": "QUICKNODE_API_KEY",
+        "subDomainEnvName": "QUICKNODE_SUBDOMAIN",
+        "traceSupport": "debug_traceTransaction"
+      }
+    ]
+  },
+  {
+    "name": "Celo Sepolia Testnet",
+    "chainId": 11142220,
+    "rpc": [
+      {
+        "type": "ApiKey",
+        "url": "https://celo-sepolia.g.alchemy.com/v2/{API_KEY}",
+        "apiKeyEnvName": "ALCHEMY_API_KEY"
+      }
+    ]
+  },
+  {
+    "name": "Linea Mainnet",
+    "chainId": 59144,
+    "rpc": [
+      "https://rpc.linea.build",
+      "https://linea-rpc.publicnode.com",
+      "https://linea.blockpi.network/v1/rpc/public",
+      {
+        "type": "ApiKey",
+        "url": "https://{SUBDOMAIN}.linea-mainnet.quiknode.pro/{API_KEY}",
+        "apiKeyEnvName": "QUICKNODE_API_KEY",
+        "subDomainEnvName": "QUICKNODE_SUBDOMAIN"
+      }
+    ]
+  },
+  {
+    "name": "Linea Sepolia Testnet",
+    "chainId": 59141,
+    "rpc": [
+      "https://rpc.sepolia.linea.build",
+      "https://linea-sepolia.blockpi.network/v1/rpc/public",
+      "https://linea-sepolia-rpc.publicnode.com"
+    ]
+  },
+  {
+    "name": "Scroll Mainnet",
+    "chainId": 534352,
+    "rpc": [
+      "https://rpc.scroll.io",
+      "https://scroll.drpc.org",
+      "https://1rpc.io/scroll",
+      {
+        "type": "ApiKey",
+        "url": "https://{SUBDOMAIN}.scroll-mainnet.quiknode.pro/{API_KEY}",
+        "apiKeyEnvName": "QUICKNODE_API_KEY",
+        "subDomainEnvName": "QUICKNODE_SUBDOMAIN",
+        "traceSupport": "debug_traceTransaction"
+      }
+    ]
+  },
+  {
+    "name": "Scroll Testnet",
+    "chainId": 534351,
+    "rpc": [
+      "https://sepolia-rpc.scroll.io",
+      "https://rpc.ankr.com/scroll_sepolia_testnet",
+      "https://scroll-sepolia-rpc.publicnode.com",
+      {
+        "type": "ApiKey",
+        "url": "https://{SUBDOMAIN}.scroll-testnet.quiknode.pro/{API_KEY}",
+        "apiKeyEnvName": "QUICKNODE_API_KEY",
+        "subDomainEnvName": "QUICKNODE_SUBDOMAIN",
+        "traceSupport": "debug_traceTransaction"
+      }
+    ]
+  },
+  {
+    "name": "Zircuit Mainnet",
+    "chainId": 48900,
+    "rpc": [
+      {
+        "type": "ApiKey",
+        "url": "https://lb.drpc.org/ogrpc?network=zircuit-mainnet&dkey={API_KEY}",
+        "apiKeyEnvName": "ZIRCUIT_API_KEY"
+      }
+    ]
   }
 ]

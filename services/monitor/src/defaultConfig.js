@@ -22,9 +22,9 @@ const defaultConfig = {
   },
   defaultChainConfig: {
     startBlock: undefined,
-    blockInterval: 10000,
+    blockInterval: 60000,
     blockIntervalFactor: 1.1,
-    blockIntervalUpperLimit: 300000,
+    blockIntervalUpperLimit: 600000,
     blockIntervalLowerLimit: 25,
     bytecodeInterval: 5000,
     bytecodeNumberOfTries: 5,
@@ -33,9 +33,7 @@ const defaultConfig = {
     traceDelay: 0,
   },
   chainConfigs: {
-    100: {
-      traceDelay: 300000,
-    },
+    181228: { startBlock: 20000 },
   },
 };
 

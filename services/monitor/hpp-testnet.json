@@ -1,0 +1,7 @@
+[
+  {
+    "name": "HPP Sepolia Testnet",
+    "chainId": 181228,
+    "rpc": ["https://sepolia.hpp.io/MHVatD9M6SyzsZpMUFn4gCd3wpxe1CGde"]
+  }
+]

@@ -1,0 +1,12 @@
+[
+  {
+    "name": "HPP Mainnet",
+    "chainId": 190415,
+    "rpc": ["https://mainnet.hpp.io"]
+  },
+  {
+    "name": "HPP Sepolia Testnet",
+    "chainId": 181228,
+    "rpc": ["https://sepolia.hpp.io"]
+  }
+]
