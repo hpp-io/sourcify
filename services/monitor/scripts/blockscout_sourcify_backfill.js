@@ -3,16 +3,22 @@
  *
  * Requirements:
  *  - Node 18+ (fetch available)
- *  - Optional: .env with HPP_RPC_API_KEY=...
+ *  - Optional: .env with API_KEY=...
  *
  * Usage example:
  * node services/monitor/scripts/blockscout_sourcify_backfill.js \
- *  --chainId 181228 \
- *  --rpcUrlTemplate "https://sepolia.hpp.io/{API_KEY}" \
- *  --rpcApiKeyEnv HPP_RPC_API_KEY \
- *  --blockscoutApi "https://sepolia-explorer.hpp.io/api" \
- *  --sourcify "http://localhost:5555" \
+ *  --chain-id 181228 \
+ *  --rpc-url "https://sepolia.hpp.io/{API_KEY}" \
+ *  --blockscout-api "https://sepolia-explorer.hpp.io/api" \
+ *  --sourcify-url "http://localhost:5555" \
  *  --from 0 --to latest --concurrency 3
+ *
+ * Or using environment variables:
+ * CHAIN_ID=181228 \
+ * RPC_URL="https://sepolia.hpp.io/{API_KEY}" \
+ * BLOCKSCOUT_API="https://sepolia-explorer.hpp.io/api" \
+ * SOURCIFY_URL="http://localhost:5555" \
+ * node services/monitor/scripts/blockscout_sourcify_backfill.js --from 0 --to latest
  */
 
 import fs from "node:fs";
@@ -24,7 +30,10 @@ function parseArgs(argv) {
   for (let i = 2; i < argv.length; i++) {
     const a = argv[i];
     if (!a.startsWith("--")) continue;
-    const key = a.slice(2);
+    // Convert kebab-case to camelCase
+    const key = a
+      .slice(2)
+      .replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
     const next = argv[i + 1];
     if (!next || next.startsWith("--")) {
       args[key] = true;
@@ -139,21 +148,67 @@ async function tryGetCreationTxHash(blockscoutApi, address) {
 }
 
 function buildVerifyPayload(blockscoutResult, creationTxHash) {
-  const fileName = blockscoutResult.FileName || "Contract.sol";
   const contractName = blockscoutResult.ContractName;
   const compilerVersion = String(blockscoutResult.CompilerVersion || "").replace(
     /^v/,
     "",
   );
 
-  const settings = blockscoutResult.CompilerSettings || {};
+  let sources = {};
+  let settings = {};
+  let fileName = blockscoutResult.FileName || "Contract.sol";
+  const sourceCode = blockscoutResult.SourceCode;
+
+  // Detect multi-file contract by checking if SourceCode is JSON
+  if (sourceCode && (sourceCode.trim().startsWith("{") || sourceCode.trim().startsWith("[{"))) {
+    try {
+      const parsed = JSON.parse(sourceCode.startsWith("[{") ? sourceCode.slice(1, -1) : sourceCode);
+
+      // Standard JSON input format
+      if (parsed.language && parsed.sources) {
+        sources = parsed.sources;
+        settings = parsed.settings || {};
+        // Find the file containing the contract
+        for (const [file, content] of Object.entries(sources)) {
+          if (content.content && content.content.includes(`contract ${contractName}`)) {
+            fileName = file;
+            break;
+          }
+        }
+      }
+      // Simple multi-file format: { "Contract.sol": { content: "..." }, ... }
+      else if (typeof parsed === "object" && !Array.isArray(parsed)) {
+        for (const [file, content] of Object.entries(parsed)) {
+          if (typeof content === "object" && content.content) {
+            sources[file] = { content: content.content };
+          } else if (typeof content === "string") {
+            sources[file] = { content };
+          }
+        }
+        settings = blockscoutResult.CompilerSettings || {};
+        // Find the file containing the contract
+        for (const [file, fileData] of Object.entries(sources)) {
+          if (fileData.content && fileData.content.includes(`contract ${contractName}`)) {
+            fileName = file;
+            break;
+          }
+        }
+      }
+    } catch (e) {
+      // If parsing fails, treat as single file
+      sources = { [fileName]: { content: sourceCode } };
+      settings = blockscoutResult.CompilerSettings || {};
+    }
+  } else {
+    // Single file contract
+    sources = { [fileName]: { content: sourceCode } };
+    settings = blockscoutResult.CompilerSettings || {};
+  }
 
   const payload = {
     stdJsonInput: {
       language: "Solidity",
-      sources: {
-        [fileName]: { content: blockscoutResult.SourceCode },
-      },
+      sources,
       settings,
     },
     compilerVersion,
@@ -221,25 +276,28 @@ async function main() {
   loadDotEnvIfExists();
 
   const args = parseArgs(process.argv);
-  const chainId = Number(args.chainId);
-  const rpcUrlTemplate = String(args.rpcUrlTemplate || "");
-  const rpcApiKeyEnv = String(args.rpcApiKeyEnv || "API_KEY");
-  const blockscoutApi = String(args.blockscoutApi || "");
-  const sourcifyBase = String(args.sourcify || "http://localhost:5555");
+
+  // Support both CLI args and environment variables
+  const chainId = Number(args.chainId || process.env.CHAIN_ID);
+  const rpcUrlTemplate = String(args.rpcUrl || process.env.RPC_URL || "");
+  const blockscoutApi = String(args.blockscoutApi || process.env.BLOCKSCOUT_API || "");
+  const sourcifyBase = String(args.sourcifyUrl || process.env.SOURCIFY_URL || "http://localhost:5555");
   const fromBlock = Number(args.from ?? 0);
   const toArg = String(args.to ?? "latest");
   const concurrency = Number(args.concurrency ?? 3);
 
   if (!chainId || !rpcUrlTemplate || !blockscoutApi) {
     throw new Error(
-      "Missing required args: --chainId --rpcUrlTemplate --blockscoutApi",
+      "Missing required args: --chain-id (or CHAIN_ID), --rpc-url (or RPC_URL), --blockscout-api (or BLOCKSCOUT_API)",
     );
   }
 
-  const apiKey = process.env[rpcApiKeyEnv] || "";
-  if (!apiKey) {
+  const apiKey = process.env.API_KEY || "";
+
+  // Only require API key if template contains {API_KEY}
+  if (rpcUrlTemplate.includes("{API_KEY}") && !apiKey) {
     throw new Error(
-      `Missing RPC api key env var: ${rpcApiKeyEnv}. Put it in .env or export it.`,
+      "Missing RPC api key env var: API_KEY. Put it in .env or export it.",
     );
   }
 
