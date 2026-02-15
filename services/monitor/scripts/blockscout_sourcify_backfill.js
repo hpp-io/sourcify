@@ -127,6 +127,12 @@ async function getBlockscoutSource(blockscoutApi, address) {
   if (json.status !== "1" || !json.result?.length) return null;
   const r0 = json.result[0];
   if (!r0?.SourceCode) return null;
+
+  // Include AdditionalSources if present
+  if (Array.isArray(r0.AdditionalSources) && r0.AdditionalSources.length > 0) {
+    r0._additionalSources = r0.AdditionalSources;
+  }
+
   return r0;
 }
 
@@ -158,6 +164,7 @@ function buildVerifyPayload(blockscoutResult, creationTxHash) {
   let settings = {};
   let fileName = blockscoutResult.FileName || "Contract.sol";
   const sourceCode = blockscoutResult.SourceCode;
+  const additionalSources = blockscoutResult._additionalSources || [];
 
   // Detect multi-file contract by checking if SourceCode is JSON
   if (sourceCode && (sourceCode.trim().startsWith("{") || sourceCode.trim().startsWith("[{"))) {
@@ -200,9 +207,18 @@ function buildVerifyPayload(blockscoutResult, creationTxHash) {
       settings = blockscoutResult.CompilerSettings || {};
     }
   } else {
-    // Single file contract
+    // Single file contract or Foundry/Hardhat style with AdditionalSources
     sources = { [fileName]: { content: sourceCode } };
     settings = blockscoutResult.CompilerSettings || {};
+  }
+
+  // Add AdditionalSources (Foundry/Hardhat style verification)
+  if (additionalSources.length > 0) {
+    for (const src of additionalSources) {
+      if (src.Filename && src.SourceCode) {
+        sources[src.Filename] = { content: src.SourceCode };
+      }
+    }
   }
 
   const payload = {
