@@ -1,0 +1,14 @@
+{
+  "cronSchedule": "0 */6 * * *",
+  "chains": [
+    {
+      "chainId": 181228,
+      "rpcUrl": "https://sepolia.hpp.io/{API_KEY}",
+      "blockscoutApi": "https://sepolia-explorer.hpp.io/api",
+      "sourcify": "http://localhost:5555",
+      "fromBlock": 0,
+      "toBlock": "latest",
+      "concurrency": 3
+    }
+  ]
+}
