@@ -19,7 +19,7 @@ export class BackfillRunner {
   constructor(config: BackfillConfig) {
     this.config = config;
     this.rpcUrl = this.buildRpcUrl();
-    this.statePath = config.statePath || path.resolve(process.cwd(), `.backfill-state-${config.chainId}.json`);
+    this.statePath = config.statePath || path.resolve(process.cwd(), "state", `backfill-state-${config.chainId}.json`);
     this.state = loadState(this.statePath);
   }
 

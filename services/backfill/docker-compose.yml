@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  backfill:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: sourcify-backfill:latest
+    container_name: sourcify-backfill
+    restart: unless-stopped
+    volumes:
+      - ./config:/home/app/services/backfill/config
+      - ./state:/home/app/services/backfill/state
+      - ./.env:/home/app/services/backfill/.env
+    environment:
+      - NODE_ENV=production
+      # API_KEY can be set here or in .env file
+      # - API_KEY=your-api-key
+    # Optional: Override the default command
+    # command: ["node", "dist/index.js", "--mode", "oneshot"]
+    networks:
+      - backfill-network
+
+networks:
+  backfill-network:
+    driver: bridge

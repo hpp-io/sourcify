@@ -31,7 +31,7 @@ async function main() {
 
   const args = parseArgs(process.argv);
 
-  const configPath = String(args.config || "backfill-config.json");
+  const configPath = String(args.config || "config/backfill-config.json");
   const mode = String(args.mode || "periodic") as "oneshot" | "periodic";
 
   console.log("[backfill] Starting with config:", configPath);

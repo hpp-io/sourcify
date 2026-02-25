@@ -15,7 +15,7 @@ Automated service to backfill verified contracts from Blockscout into Sourcify b
 
 ```bash
 cd services/backfill
-npm install
+npm install  # 자체 package-lock.json 생성
 npm run build
 ```
 
@@ -23,10 +23,11 @@ npm run build
 
 ### 1. Create Config File
 
-Copy the example config and customize:
+Create a `config` directory and copy the example config:
 
 ```bash
-cp backfill-config.example.json backfill-config.json
+mkdir -p config
+cp backfill-config.example.json config/backfill-config.json
 ```
 
 Example configuration:
@@ -68,7 +69,7 @@ npm start
 Or with custom config:
 
 ```bash
-node dist/index.js --config my-config.json
+node dist/index.js --config config/my-config.json
 ```
 
 ### One-shot Mode
@@ -82,7 +83,7 @@ npm run dev
 Or:
 
 ```bash
-node dist/index.js --mode oneshot --config my-config.json
+node dist/index.js --mode oneshot --config config/my-config.json
 ```
 
 ## Configuration Options
@@ -104,13 +105,13 @@ Each chain in the `chains` array supports:
 - `fromBlock` (optional): Starting block number (default: 0)
 - `toBlock` (optional): Ending block number or "latest" (default: "latest")
 - `concurrency` (optional): Number of concurrent contract verifications (default: 3)
-- `statePath` (optional): Custom path for state file (default: `.backfill-state-{chainId}.json`)
+- `statePath` (optional): Custom path for state file (default: `state/backfill-state-{chainId}.json`)
 
 **Note**: The `rpcUrl` field supports `{API_KEY}` placeholder which will be replaced with the `API_KEY` environment variable. If your RPC URL doesn't require an API key, you can provide the full URL directly.
 
 ## State Management
 
-The service maintains state files (`.backfill-state-{chainId}.json`) that track:
+The service maintains state files in the `state/` directory (`backfill-state-{chainId}.json`) that track:
 
 - Last scanned block
 - Seen contracts
@@ -128,6 +129,74 @@ This allows the service to resume from where it left off after restarts.
 - `"*/30 * * * *"` - Every 30 minutes
 
 See [cron syntax](https://github.com/node-cron/node-cron#cron-syntax) for more patterns.
+
+## Docker
+
+### Option 1: Docker Compose (Recommended)
+
+```bash
+# Setup
+mkdir -p config state
+cp backfill-config.example.json config/backfill-config.json
+# Edit config/backfill-config.json and .env with your settings
+
+# Build and start
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop
+docker-compose down
+```
+
+### Option 2: Docker Build and Run
+
+#### Build Image
+
+```bash
+cd services/backfill
+docker build -t sourcify-backfill .
+```
+
+#### Run with Docker
+
+```bash
+docker run -d \
+  --name sourcify-backfill \
+  -v $(pwd)/config:/home/app/services/backfill/config \
+  -v $(pwd)/state:/home/app/services/backfill/state \
+  -e API_KEY=your-api-key \
+  sourcify-backfill
+```
+
+**Volume Mounts:**
+- `/home/app/services/backfill/config`: Mount your config directory containing `backfill-config.json`
+- `/home/app/services/backfill/state`: Mount state directory for backfill-state-*.json` files
+
+**Setup:**
+
+```bash
+# Create directories on host
+mkdir -p ./config ./state
+
+# Copy config file
+cp backfill-config.example.json ./config/backfill-config.json
+# Edit ./config/backfill-config.json with your settings
+
+# Run container
+docker run -d \
+  --name sourcify-backfill \
+  -v $(pwd)/config:/home/app/services/backfill/config \
+  -v $(pwd)/state:/home/app/services/backfill/state \
+  -e API_KEY=your-api-key \
+  sourcify-backfill
+```
+
+**Note:**
+- Config file is read from `config/backfill-config.json` by default
+- State files are automatically saved to the mounted `state/` directory
+- Progress persists across container restarts
 
 ## Development
 
